@@ -1,1 +1,1 @@
-# fixtures-project-banking
+# fixture-project-banking
