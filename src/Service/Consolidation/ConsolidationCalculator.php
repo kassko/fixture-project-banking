@@ -6,6 +6,12 @@ namespace App\Service\Consolidation;
 
 class ConsolidationCalculator
 {
+    /**
+     * Calculate aggregated balances across multiple accounts.
+     * 
+     * @param array $accounts Array of account data with keys: balance, currency, account_type
+     * @return array Aggregated balances with total_assets, total_liabilities, net_position, etc.
+     */
     public function calculateAggregatedBalances(array $accounts): array
     {
         $totalAssets = 0.0;
@@ -120,6 +126,14 @@ class ConsolidationCalculator
         ];
     }
 
+    /**
+     * Calculate liquidity ratio - percentage of liquid assets to total assets.
+     * Liquid assets are defined as CHECKING and SAVINGS account balances.
+     * Formula: (Liquid Assets / Total Assets) * 100
+     * 
+     * @param array $accounts Array of account data
+     * @return float Liquidity ratio as percentage (0-100)
+     */
     private function calculateLiquidityRatio(array $accounts): float
     {
         $liquidAssets = 0.0;

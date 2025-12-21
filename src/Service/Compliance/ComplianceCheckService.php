@@ -18,6 +18,15 @@ class ComplianceCheckService
     ) {
     }
 
+    /**
+     * Perform comprehensive compliance check for a customer.
+     * Executes KYC, AML, and regulatory checks based on request parameters.
+     * 
+     * @param ComplianceCheckRequest $request Request specifying checks to perform
+     * @param UnifiedContext $context Multi-tenant/brand context
+     * @return ComplianceCheckResponse Complete compliance status with recommendations
+     * @throws \RuntimeException if customer not found
+     */
     public function check(ComplianceCheckRequest $request, UnifiedContext $context): ComplianceCheckResponse
     {
         // Verify customer exists

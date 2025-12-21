@@ -19,6 +19,16 @@ class AmlChecker
     ) {
     }
 
+    /**
+     * Perform AML (Anti-Money Laundering) check for a customer.
+     * Includes PEP screening, transaction pattern analysis, high-value transaction checks,
+     * and geographic risk assessment.
+     * 
+     * @param Customer $customer Customer entity to check
+     * @param array|null $transactionIds Optional array of transaction IDs to analyze
+     * @param UnifiedContext $context Multi-tenant/brand context
+     * @return array AML check results with status, risk_level, checks, and alerts
+     */
     public function check(Customer $customer, ?array $transactionIds, UnifiedContext $context): array
     {
         $alerts = [];
