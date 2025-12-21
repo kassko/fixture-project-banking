@@ -1,0 +1,9 @@
+api_platform:
+    title: 'Banking & Insurance API'
+    description: 'API pour système Banque/Assurance - Test hydrateur'
+    version: '1.0.0'
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    swagger_ui:
+        enabled: true

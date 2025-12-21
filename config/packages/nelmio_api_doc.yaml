@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: 'Banking & Insurance API'
+            description: 'API REST pour système Banque/Assurance'
+            version: '1.0.0'
+    areas:
+        path_patterns:
+            - ^/api(?!/doc)
