@@ -1,0 +1,22 @@
+brand_id: standard
+name: Standard
+description: Marque standard pour le grand public
+type: standard
+
+rate_adjustment: 0.0
+fee_multiplier: 1.0
+service_quality: standard
+
+features:
+  online_banking: true
+  mobile_app: true
+  customer_support: true
+
+marketing:
+  target_segment: mass_market
+  minimum_assets: 0
+
+benefits:
+  - Services bancaires complets
+  - Application mobile
+  - Support client

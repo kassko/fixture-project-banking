@@ -1,0 +1,25 @@
+periods:
+  regular:
+    name: "Période régulière"
+    description: "Conditions standard"
+    
+  end_of_year_promotion:
+    name: "Promotion de fin d'année"
+    description: "Promotions spéciales de novembre et décembre"
+    start_month: 11
+    end_month: 12
+    discount_rate: 0.15
+    
+  summer_promotion:
+    name: "Promotion d'été"
+    description: "Offres d'été"
+    start_month: 6
+    end_month: 8
+    discount_rate: 0.10
+    
+  back_to_school:
+    name: "Rentrée scolaire"
+    description: "Offres de rentrée"
+    start_month: 9
+    end_month: 9
+    discount_rate: 0.08

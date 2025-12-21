@@ -1,0 +1,27 @@
+brand_id: lowcost_eco
+name: Eco
+description: Marque low-cost économique
+type: lowcost
+
+rate_adjustment: 0.3
+fee_multiplier: 0.5
+service_quality: basic
+
+features:
+  online_banking: true
+  mobile_app: true
+  automated_support: true
+
+marketing:
+  target_segment: budget_conscious
+  minimum_assets: 0
+
+benefits:
+  - Services en ligne
+  - Frais réduits
+  - Simplicité d'utilisation
+  
+limitations:
+  - Support automatisé uniquement
+  - Pas de conseiller dédié
+  - Services de base

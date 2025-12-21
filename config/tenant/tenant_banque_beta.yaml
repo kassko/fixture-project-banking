@@ -1,0 +1,29 @@
+tenant_id: banque_beta
+name: Banque Beta
+description: Banque digitale moderne
+
+loan_settings:
+  min_amount: 1000
+  max_amount: 500000
+  min_duration: 6
+  max_duration: 240
+  base_rate: 3.8
+  special_rates:
+    HOME: 3.5
+    AUTO: 4.2
+    PERSONAL: 5.8
+
+insurance_settings:
+  available_types:
+    - HOME
+    - AUTO
+  base_premium_rate: 0.005
+  max_coverage: 2000000
+
+risk_thresholds:
+  min_credit_score: 50
+  preferred_credit_score: 75
+  
+branding:
+  theme_color: '#e84118'
+  logo: 'banque_beta_logo.png'

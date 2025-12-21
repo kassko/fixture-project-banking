@@ -1,0 +1,25 @@
+brand_id: premium_gold
+name: Premium Gold
+description: Marque premium haut de gamme
+type: premium
+
+rate_adjustment: -0.15
+fee_multiplier: 0.85
+service_quality: premium
+
+features:
+  dedicated_advisor: true
+  priority_support: true
+  concierge_service: true
+  investment_advisory: true
+
+marketing:
+  target_segment: high_net_worth
+  minimum_assets: 500000
+
+benefits:
+  - Conseiller dédié
+  - Support prioritaire 24/7
+  - Service de conciergerie
+  - Taux préférentiels
+  - Frais réduits

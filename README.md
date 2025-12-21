@@ -257,6 +257,10 @@ L'API Platform est également disponible pour les endpoints des entités:
 - `GET /api/v1/legacy/compliance/kyc/{customerId}` - Données KYC
 - `GET /api/v1/legacy/compliance/aml/{customerId}` - Vérifications AML
 
+### Simulations (Multi-tenant/Multi-brand avec feature flags)
+- `POST /api/v1/simulation/loan` - Simulation de prêt multi-scénarios
+- `POST /api/v1/simulation/insurance-quote` - Devis assurance personnalisé
+
 ## Exemples cURL
 
 ### Customers (Clients)
@@ -498,6 +502,39 @@ curl -X GET http://localhost:8000/api/v1/legacy/compliance/kyc/CUST001
 #### Obtenir les vérifications AML d'un client
 ```bash
 curl -X GET http://localhost:8000/api/v1/legacy/compliance/aml/CUST001
+```
+
+### Simulations (Multi-tenant/Multi-brand)
+
+#### Simulation de prêt
+```bash
+curl -X POST http://localhost:8000/api/v1/simulation/loan \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-Id: banque_alpha" \
+  -H "X-Brand-Id: premium_gold" \
+  -d '{
+    "customerId": 1,
+    "amount": 50000,
+    "currency": "EUR",
+    "purpose": "HOME",
+    "preferredDuration": 60
+  }'
+```
+
+#### Devis assurance
+```bash
+curl -X POST http://localhost:8000/api/v1/simulation/insurance-quote \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-Id: banque_alpha" \
+  -H "X-Brand-Id: standard" \
+  -d '{
+    "customerId": 1,
+    "insuranceType": "HOME",
+    "assetDetails": {
+      "value": 250000,
+      "yearBuilt": 1990
+    }
+  }'
 ```
 
 ## Utilisation
