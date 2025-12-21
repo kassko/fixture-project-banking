@@ -28,6 +28,11 @@ class Deductible
     ) {
         $this->type = $type;
         $this->amount = $amount;
+        
+        // Validate percentage is within valid range
+        if ($percentage < 0.0 || $percentage > 100.0) {
+            throw new \InvalidArgumentException('Percentage must be between 0 and 100');
+        }
         $this->percentage = $percentage;
         $this->applicableTo = $applicableTo;
     }
@@ -90,9 +95,14 @@ class Deductible
     
     private function calculateTieredDeductible(MoneyAmount $claimAmount): MoneyAmount
     {
-        // Simple tiered calculation - could be more complex
+        // Simple tiered calculation - use the higher of fixed amount or percentage
         if ($claimAmount->getAmount() < 1000) {
             return $this->amount;
+        }
+        
+        // Ensure currencies match before comparison
+        if ($this->amount->getCurrency() !== $claimAmount->getCurrency()) {
+            throw new \InvalidArgumentException('Currency mismatch between deductible and claim amount');
         }
         
         $percentageAmount = $claimAmount->getAmount() * ($this->percentage / 100);

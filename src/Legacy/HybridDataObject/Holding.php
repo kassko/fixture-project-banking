@@ -106,7 +106,8 @@ class Holding
     
     public function getGainLossPercentage(): float
     {
-        if ($this->purchasePrice == 0) {
+        // Use strict comparison with epsilon for floating point
+        if (abs($this->purchasePrice) < PHP_FLOAT_EPSILON) {
             return 0.0;
         }
         return (($this->currentPrice - $this->purchasePrice) / $this->purchasePrice) * 100;
