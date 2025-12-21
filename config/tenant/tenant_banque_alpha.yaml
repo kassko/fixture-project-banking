@@ -1,0 +1,30 @@
+tenant_id: banque_alpha
+name: Banque Alpha
+description: Banque traditionnelle premium
+
+loan_settings:
+  min_amount: 5000
+  max_amount: 1000000
+  min_duration: 12
+  max_duration: 360
+  base_rate: 3.2
+  special_rates:
+    HOME: 3.0
+    AUTO: 3.8
+    PERSONAL: 5.0
+
+insurance_settings:
+  available_types:
+    - HOME
+    - AUTO
+    - LIFE
+  base_premium_rate: 0.004
+  max_coverage: 5000000
+
+risk_thresholds:
+  min_credit_score: 40
+  preferred_credit_score: 70
+  
+branding:
+  theme_color: '#1a5490'
+  logo: 'banque_alpha_logo.png'

@@ -1,0 +1,33 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Entity/'
+            - '../src/Legacy/DataObject/'
+            - '../src/Legacy/HybridDataObject/'
+            - '../src/DTO/'
+            - '../src/Model/'
+
+    # Tenant/Brand Configuration Loaders
+    App\Tenant\TenantConfigurationLoader:
+        arguments:
+            $configPath: '%kernel.project_dir%/config/tenant'
+
+    App\Brand\BrandConfigurationLoader:
+        arguments:
+            $configPath: '%kernel.project_dir%/config/brand'
+
+    # Temporal Services
+    App\Temporal\PeriodResolver:
+        arguments:
+            $configPath: '%kernel.project_dir%/config/temporal'
+
+    # Feature Flag Service
+    App\FeatureFlag\FeatureFlagService:
+        arguments:
+            $configPath: '%kernel.project_dir%/config/features'
