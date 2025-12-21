@@ -173,7 +173,7 @@ $data = $legacySource->getCustomerData('CUST001');
 # Installer les dépendances
 composer install
 
-# Créer la base de données
+# Créer la base de données SQLite
 php bin/console doctrine:database:create
 
 # Créer le schéma
@@ -181,6 +181,323 @@ php bin/console doctrine:schema:create
 
 # Charger les fixtures
 php bin/console doctrine:fixtures:load
+```
+
+## Lancer le serveur
+
+### Option 1: Avec Symfony CLI (recommandé)
+```bash
+symfony server:start
+```
+
+### Option 2: Avec le serveur PHP intégré
+```bash
+php -S localhost:8000 -t public
+```
+
+L'API sera accessible à l'adresse: `http://localhost:8000`
+
+## Documentation API
+
+### Swagger UI
+Une fois le serveur lancé, accédez à la documentation interactive Swagger:
+- **Interface Swagger UI**: http://localhost:8000/api/doc
+- **Spécification OpenAPI JSON**: http://localhost:8000/api/doc.json
+
+### API Platform
+L'API Platform est également disponible pour les endpoints des entités:
+- **API Platform UI**: http://localhost:8000/api (si configuré)
+
+## Endpoints API REST
+
+### Customers (Clients)
+- `GET /api/v1/customers` - Liste tous les clients
+- `GET /api/v1/customers/{id}` - Détail d'un client
+- `POST /api/v1/customers/individual` - Créer un client individuel
+- `POST /api/v1/customers/corporate` - Créer un client entreprise
+- `POST /api/v1/customers/premium` - Créer un client premium
+- `PUT /api/v1/customers/{id}` - Modifier un client
+- `DELETE /api/v1/customers/{id}` - Supprimer un client
+
+### Bank Accounts (Comptes bancaires)
+- `GET /api/v1/accounts` - Liste des comptes
+- `GET /api/v1/accounts/{id}` - Détail d'un compte
+- `POST /api/v1/accounts/{id}/deposit` - Effectuer un dépôt
+- `POST /api/v1/accounts/{id}/withdraw` - Effectuer un retrait
+- `POST /api/v1/accounts/{id}/transfer` - Effectuer un virement
+- `GET /api/v1/accounts/{id}/transactions` - Historique des transactions
+
+### Transactions
+- `GET /api/v1/transactions` - Liste des transactions
+- `GET /api/v1/transactions/{id}` - Détail d'une transaction
+- `GET /api/v1/transactions/reference/{reference}` - Recherche par référence
+
+### Insurance Policies (Polices d'assurance)
+- `GET /api/v1/policies` - Liste des polices
+- `GET /api/v1/policies/{id}` - Détail d'une police
+- `POST /api/v1/policies` - Créer une police
+- `GET /api/v1/policies/{id}/coverages` - Couvertures d'une police
+- `GET /api/v1/policies/{id}/beneficiaries` - Bénéficiaires d'une police
+
+### Claims (Sinistres)
+- `GET /api/v1/claims` - Liste des sinistres
+- `GET /api/v1/claims/{id}` - Détail d'un sinistre
+- `POST /api/v1/claims` - Déclarer un sinistre
+- `PATCH /api/v1/claims/{id}/status` - Mettre à jour le statut
+
+### Legacy Data (Données legacy - pour test hydratation)
+- `GET /api/v1/legacy/customers/{legacyId}` - Données legacy client
+- `GET /api/v1/legacy/customers/{legacyId}/history` - Historique legacy
+- `GET /api/v1/legacy/policies/{policyId}` - Données legacy police
+- `GET /api/v1/legacy/policies/{policyId}/claims` - Historique sinistres
+- `GET /api/v1/legacy/ratings/credit/{customerId}` - Credit rating
+- `GET /api/v1/legacy/ratings/market` - Données marché
+- `GET /api/v1/legacy/rates/interest` - Taux d'intérêt
+- `GET /api/v1/legacy/rates/exchange` - Taux de change
+- `GET /api/v1/legacy/compliance/kyc/{customerId}` - Données KYC
+- `GET /api/v1/legacy/compliance/aml/{customerId}` - Vérifications AML
+
+## Exemples cURL
+
+### Customers (Clients)
+
+#### Lister tous les clients
+```bash
+curl -X GET http://localhost:8000/api/v1/customers
+```
+
+#### Obtenir un client par ID
+```bash
+curl -X GET http://localhost:8000/api/v1/customers/1
+```
+
+#### Créer un client individuel
+```bash
+curl -X POST http://localhost:8000/api/v1/customers/individual \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Jean",
+    "lastName": "Dupont",
+    "customerNumber": "CUST-001"
+  }'
+```
+
+#### Créer un client entreprise
+```bash
+curl -X POST http://localhost:8000/api/v1/customers/corporate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "companyName": "ACME Corp",
+    "customerNumber": "CORP-001"
+  }'
+```
+
+#### Créer un client premium
+```bash
+curl -X POST http://localhost:8000/api/v1/customers/premium \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Marie",
+    "lastName": "Martin",
+    "customerNumber": "PREM-001"
+  }'
+```
+
+#### Modifier un client
+```bash
+curl -X PUT http://localhost:8000/api/v1/customers/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "Jean-Pierre",
+    "lastName": "Dupont"
+  }'
+```
+
+#### Supprimer un client
+```bash
+curl -X DELETE http://localhost:8000/api/v1/customers/1
+```
+
+### Bank Accounts (Comptes bancaires)
+
+#### Lister tous les comptes
+```bash
+curl -X GET http://localhost:8000/api/v1/accounts
+```
+
+#### Obtenir un compte par ID
+```bash
+curl -X GET http://localhost:8000/api/v1/accounts/1
+```
+
+#### Effectuer un dépôt
+```bash
+curl -X POST http://localhost:8000/api/v1/accounts/1/deposit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 500,
+    "currency": "EUR"
+  }'
+```
+
+#### Effectuer un retrait
+```bash
+curl -X POST http://localhost:8000/api/v1/accounts/1/withdraw \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 100,
+    "currency": "EUR"
+  }'
+```
+
+#### Effectuer un virement
+```bash
+curl -X POST http://localhost:8000/api/v1/accounts/1/transfer \
+  -H "Content-Type: application/json" \
+  -d '{
+    "target_account_id": 2,
+    "amount": 250,
+    "currency": "EUR"
+  }'
+```
+
+#### Historique des transactions d'un compte
+```bash
+curl -X GET http://localhost:8000/api/v1/accounts/1/transactions
+```
+
+### Transactions
+
+#### Lister toutes les transactions
+```bash
+curl -X GET http://localhost:8000/api/v1/transactions
+```
+
+#### Obtenir une transaction par ID
+```bash
+curl -X GET http://localhost:8000/api/v1/transactions/1
+```
+
+#### Rechercher une transaction par référence
+```bash
+curl -X GET http://localhost:8000/api/v1/transactions/reference/TRF-12345
+```
+
+### Insurance Policies (Polices d'assurance)
+
+#### Lister toutes les polices
+```bash
+curl -X GET http://localhost:8000/api/v1/policies
+```
+
+#### Obtenir une police par ID
+```bash
+curl -X GET http://localhost:8000/api/v1/policies/1
+```
+
+#### Créer une police
+```bash
+curl -X POST http://localhost:8000/api/v1/policies \
+  -H "Content-Type: application/json" \
+  -d '{
+    "policyNumber": "POL-001",
+    "customerId": 1,
+    "premium": 1200.00
+  }'
+```
+
+#### Obtenir les couvertures d'une police
+```bash
+curl -X GET http://localhost:8000/api/v1/policies/1/coverages
+```
+
+#### Obtenir les bénéficiaires d'une police
+```bash
+curl -X GET http://localhost:8000/api/v1/policies/1/beneficiaries
+```
+
+### Claims (Sinistres)
+
+#### Lister tous les sinistres
+```bash
+curl -X GET http://localhost:8000/api/v1/claims
+```
+
+#### Obtenir un sinistre par ID
+```bash
+curl -X GET http://localhost:8000/api/v1/claims/1
+```
+
+#### Déclarer un sinistre
+```bash
+curl -X POST http://localhost:8000/api/v1/claims \
+  -H "Content-Type: application/json" \
+  -d '{
+    "policyId": 1,
+    "description": "Dégât des eaux dans la cuisine",
+    "incidentDate": "2024-01-15"
+  }'
+```
+
+#### Mettre à jour le statut d'un sinistre
+```bash
+curl -X PATCH http://localhost:8000/api/v1/claims/1/status \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "approved"
+  }'
+```
+
+### Legacy Data (Données legacy - pour test hydratation)
+
+#### Obtenir les données legacy d'un client
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/customers/CUST001
+```
+
+#### Obtenir l'historique legacy d'un client
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/customers/CUST001/history
+```
+
+#### Obtenir les données legacy d'une police
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/policies/POL001
+```
+
+#### Obtenir l'historique des sinistres d'une police
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/policies/POL001/claims
+```
+
+#### Obtenir le credit rating d'un client
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/ratings/credit/CUST001
+```
+
+#### Obtenir les données marché
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/ratings/market
+```
+
+#### Obtenir les taux d'intérêt
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/rates/interest
+```
+
+#### Obtenir les taux de change
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/rates/exchange
+```
+
+#### Obtenir les données KYC d'un client
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/compliance/kyc/CUST001
+```
+
+#### Obtenir les vérifications AML d'un client
+```bash
+curl -X GET http://localhost:8000/api/v1/legacy/compliance/aml/CUST001
 ```
 
 ## Utilisation
