@@ -36,4 +36,19 @@ class BrandConfiguration
         
         return $value;
     }
+
+    public function getIncludedProducts(): array
+    {
+        return $this->get('included_products', []);
+    }
+
+    public function getSegment(): string
+    {
+        return $this->get('type', 'standard');
+    }
+
+    public function getWelcomeOffer(): ?array
+    {
+        return $this->get('welcome_offer');
+    }
 }

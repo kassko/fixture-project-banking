@@ -31,3 +31,8 @@ features:
     strategy: percentage_rollout
     percentage: 25
     description: "Features en beta (25% des utilisateurs)"
+  
+  new_eligibility_engine:
+    strategy: boolean
+    enabled: false
+    description: "Nouveau moteur d'éligibilité ML"

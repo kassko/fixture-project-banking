@@ -1,6 +1,8 @@
 tenant_id: banque_alpha
 name: Banque Alpha
 description: Banque traditionnelle premium
+country: FR
+kyc_provider: veriff
 
 loan_settings:
   min_amount: 5000
@@ -24,6 +26,45 @@ insurance_settings:
 risk_thresholds:
   min_credit_score: 40
   preferred_credit_score: 70
+
+available_products:
+  - code: SAVINGS_ACCOUNT
+    name: Compte Épargne
+    category: SAVINGS
+    requires_kyc: true
+    min_credit_score: 500
+    base_priority: 80
+  - code: CHECKING_ACCOUNT
+    name: Compte Courant
+    category: SAVINGS
+    requires_kyc: true
+    min_credit_score: 450
+    base_priority: 90
+  - code: PERSONAL_LOAN
+    name: Prêt Personnel
+    category: LOANS
+    requires_kyc: true
+    min_credit_score: 650
+    min_income: 25000
+    age_requirements:
+      min_age: 18
+      max_age: 70
+    base_priority: 70
+  - code: HOME_INSURANCE
+    name: Assurance Habitation
+    category: INSURANCE
+    requires_kyc: true
+    base_priority: 60
+  - code: INVESTMENT_ACCOUNT
+    name: Compte Investissement
+    category: INVESTMENT
+    requires_kyc: true
+    min_credit_score: 700
+    min_income: 50000
+    age_requirements:
+      min_age: 21
+      max_age: 75
+    base_priority: 50
   
 branding:
   theme_color: '#1a5490'

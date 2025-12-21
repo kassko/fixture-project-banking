@@ -36,4 +36,19 @@ class TenantConfiguration
         
         return $value;
     }
+
+    public function getAvailableProducts(): array
+    {
+        return $this->get('available_products', []);
+    }
+
+    public function getCountry(): string
+    {
+        return $this->get('country', 'FR');
+    }
+
+    public function getKycProvider(): string
+    {
+        return $this->get('kyc_provider', 'default');
+    }
 }
