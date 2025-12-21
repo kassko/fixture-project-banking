@@ -103,7 +103,7 @@ class Address
             $this->city,
             $this->zipCode,
             $this->country,
-        ]);
+        ], fn($part) => !empty($part));
         
         return implode(', ', $parts);
     }

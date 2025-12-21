@@ -121,6 +121,11 @@ class Coverage
     
     public function calculatePayout(MoneyAmount $claimAmount): MoneyAmount
     {
+        // Validate currency match
+        if ($this->maxAmount->getCurrency() !== $claimAmount->getCurrency()) {
+            throw new \InvalidArgumentException('Currency mismatch between coverage and claim amount');
+        }
+        
         // Calculate deductible
         $deductibleAmount = $this->deductible->calculateDeductible($claimAmount);
         
