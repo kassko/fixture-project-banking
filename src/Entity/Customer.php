@@ -191,4 +191,22 @@ class Customer extends AbstractCustomer
         }
         return $this;
     }
+
+    /**
+     * Get all products (accounts and insurance policies combined).
+     */
+    public function getProducts(): array
+    {
+        $products = [];
+        
+        foreach ($this->accounts as $account) {
+            $products[] = $account;
+        }
+        
+        foreach ($this->insurancePolicies as $policy) {
+            $products[] = $policy;
+        }
+        
+        return $products;
+    }
 }

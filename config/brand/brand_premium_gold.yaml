@@ -7,6 +7,13 @@ rate_adjustment: -0.15
 fee_multiplier: 0.85
 service_quality: premium
 
+included_products:
+  - SAVINGS_ACCOUNT
+  - CHECKING_ACCOUNT
+  - PERSONAL_LOAN
+  - HOME_INSURANCE
+  - INVESTMENT_ACCOUNT
+
 features:
   dedicated_advisor: true
   priority_support: true
@@ -16,6 +23,13 @@ features:
 marketing:
   target_segment: high_net_worth
   minimum_assets: 500000
+
+welcome_offer:
+  code: PREMIUM_WELCOME
+  name: Offre de bienvenue Premium
+  description: Bonus de bienvenue pour clients premium
+  value: 150.0
+  valid_days: 90
 
 benefits:
   - Conseiller dédié

@@ -31,3 +31,27 @@ services:
     App\FeatureFlag\FeatureFlagService:
         arguments:
             $configPath: '%kernel.project_dir%/config/features'
+
+    # Eligibility Rules - tagged for auto-injection
+    App\Service\Eligibility\RuleEngine\AgeRule:
+        tags: ['app.eligibility_rule']
+
+    App\Service\Eligibility\RuleEngine\IncomeRule:
+        tags: ['app.eligibility_rule']
+
+    App\Service\Eligibility\RuleEngine\KycStatusRule:
+        tags: ['app.eligibility_rule']
+
+    App\Service\Eligibility\RuleEngine\CreditScoreRule:
+        tags: ['app.eligibility_rule']
+
+    App\Service\Eligibility\RuleEngine\ExistingProductsRule:
+        tags: ['app.eligibility_rule']
+
+    App\Service\Eligibility\RuleEngine\GeoRestrictionRule:
+        tags: ['app.eligibility_rule']
+
+    # ProductEligibilityService with tagged rules
+    App\Service\Eligibility\ProductEligibilityService:
+        arguments:
+            $rules: !tagged_iterator app.eligibility_rule

@@ -7,42 +7,44 @@ namespace App\Context;
 class UnifiedContext
 {
     public function __construct(
-        private TenantContext $tenantContext,
-        private BrandContext $brandContext,
-        private UserContext $userContext,
-        private SessionContext $sessionContext,
-        private TemporalContext $temporalContext,
-        private CampaignContext $campaignContext
+        public readonly TenantContext $tenant,
+        public readonly BrandContext $brand,
+        public readonly UserContext $user,
+        public readonly SessionContext $session,
+        public readonly TemporalContext $temporal,
+        public readonly CampaignContext $campaign,
+        public readonly ?object $features = null
     ) {
     }
 
+    // Backward compatibility methods
     public function getTenantContext(): TenantContext
     {
-        return $this->tenantContext;
+        return $this->tenant;
     }
 
     public function getBrandContext(): BrandContext
     {
-        return $this->brandContext;
+        return $this->brand;
     }
 
     public function getUserContext(): UserContext
     {
-        return $this->userContext;
+        return $this->user;
     }
 
     public function getSessionContext(): SessionContext
     {
-        return $this->sessionContext;
+        return $this->session;
     }
 
     public function getTemporalContext(): TemporalContext
     {
-        return $this->temporalContext;
+        return $this->temporal;
     }
 
     public function getCampaignContext(): CampaignContext
     {
-        return $this->campaignContext;
+        return $this->campaign;
     }
 }
