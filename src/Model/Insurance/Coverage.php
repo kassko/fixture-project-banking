@@ -4,33 +4,63 @@ declare(strict_types=1);
 
 namespace App\Model\Insurance;
 
+use App\Enum\CoverageType;
 use App\Model\Financial\MoneyAmount;
 
 /**
  * Represents an insurance coverage with limits and exclusions.
+ * Deep nesting: Coverage → Deductible → MoneyAmount
  */
 class Coverage
 {
-    /**
-     * @param array<string> $exclusions
-     */
+    private CoverageType $type;
+    
+    private MoneyAmount $maxAmount;
+    
+    private Deductible $deductible;
+    
+    private array $conditions = [];
+    
+    private array $exclusions = [];
+    
+    private int $waitingPeriod = 0; // in days
+    
     public function __construct(
-        private string $coverageType,
-        private MoneyAmount $coverageLimit,
-        private Deductible $deductible,
-        private array $exclusions = [],
-        private bool $isActive = true,
+        CoverageType $type,
+        MoneyAmount $maxAmount,
+        Deductible $deductible,
+        array $conditions = [],
+        array $exclusions = [],
+        int $waitingPeriod = 0
     ) {
+        $this->type = $type;
+        $this->maxAmount = $maxAmount;
+        $this->deductible = $deductible;
+        $this->conditions = $conditions;
+        $this->exclusions = $exclusions;
+        $this->waitingPeriod = $waitingPeriod;
     }
     
-    public function getCoverageType(): string
+    public function getType(): CoverageType
     {
-        return $this->coverageType;
+        return $this->type;
     }
     
-    public function getCoverageLimit(): MoneyAmount
+    public function setType(CoverageType $type): static
     {
-        return $this->coverageLimit;
+        $this->type = $type;
+        return $this;
+    }
+    
+    public function getMaxAmount(): MoneyAmount
+    {
+        return $this->maxAmount;
+    }
+    
+    public function setMaxAmount(MoneyAmount $maxAmount): static
+    {
+        $this->maxAmount = $maxAmount;
+        return $this;
     }
     
     public function getDeductible(): Deductible
@@ -38,37 +68,74 @@ class Coverage
         return $this->deductible;
     }
     
-    /**
-     * @return array<string>
-     */
+    public function setDeductible(Deductible $deductible): static
+    {
+        $this->deductible = $deductible;
+        return $this;
+    }
+    
+    public function getConditions(): array
+    {
+        return $this->conditions;
+    }
+    
+    public function setConditions(array $conditions): static
+    {
+        $this->conditions = $conditions;
+        return $this;
+    }
+    
+    public function addCondition(string $condition): static
+    {
+        $this->conditions[] = $condition;
+        return $this;
+    }
+    
     public function getExclusions(): array
     {
         return $this->exclusions;
     }
     
-    public function isActive(): bool
+    public function setExclusions(array $exclusions): static
     {
-        return $this->isActive;
+        $this->exclusions = $exclusions;
+        return $this;
+    }
+    
+    public function addExclusion(string $exclusion): static
+    {
+        $this->exclusions[] = $exclusion;
+        return $this;
+    }
+    
+    public function getWaitingPeriod(): int
+    {
+        return $this->waitingPeriod;
+    }
+    
+    public function setWaitingPeriod(int $waitingPeriod): static
+    {
+        $this->waitingPeriod = $waitingPeriod;
+        return $this;
     }
     
     public function calculatePayout(MoneyAmount $claimAmount): MoneyAmount
     {
-        if (!$this->isActive) {
-            return new MoneyAmount(0, $claimAmount->getCurrency());
-        }
+        // Calculate deductible
+        $deductibleAmount = $this->deductible->calculateDeductible($claimAmount);
         
-        // Subtract deductible
-        $afterDeductible = $claimAmount->subtract($this->deductible->getAmount());
+        // Subtract deductible from claim
+        $afterDeductible = $claimAmount->getAmount() - $deductibleAmount->getAmount();
         
-        if ($afterDeductible->isNegative() || $afterDeductible->isZero()) {
+        if ($afterDeductible <= 0) {
             return new MoneyAmount(0, $claimAmount->getCurrency());
         }
         
         // Apply coverage limit
-        if ($afterDeductible->getAmount() > $this->coverageLimit->getAmount()) {
-            return $this->coverageLimit;
+        if ($afterDeductible > $this->maxAmount->getAmount()) {
+            return $this->maxAmount;
         }
         
-        return $afterDeductible;
+        return new MoneyAmount($afterDeductible, $claimAmount->getCurrency());
     }
 }

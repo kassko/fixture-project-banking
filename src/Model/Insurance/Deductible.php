@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Insurance;
 
+use App\Enum\DeductibleType;
 use App\Model\Financial\MoneyAmount;
 
 /**
@@ -11,14 +12,35 @@ use App\Model\Financial\MoneyAmount;
  */
 class Deductible
 {
+    private DeductibleType $type;
+    
+    private MoneyAmount $amount;
+    
+    private float $percentage = 0.0;
+    
+    private array $applicableTo = [];
+    
     public function __construct(
-        private MoneyAmount $amount,
-        private string $type = 'per_claim', // per_claim, annual, percentage
-        private ?float $percentage = null,
+        DeductibleType $type,
+        MoneyAmount $amount,
+        float $percentage = 0.0,
+        array $applicableTo = []
     ) {
-        if ($type === 'percentage' && ($percentage === null || $percentage < 0 || $percentage > 100)) {
-            throw new \InvalidArgumentException('Percentage deductible must be between 0 and 100');
-        }
+        $this->type = $type;
+        $this->amount = $amount;
+        $this->percentage = $percentage;
+        $this->applicableTo = $applicableTo;
+    }
+    
+    public function getType(): DeductibleType
+    {
+        return $this->type;
+    }
+    
+    public function setType(DeductibleType $type): static
+    {
+        $this->type = $type;
+        return $this;
     }
     
     public function getAmount(): MoneyAmount
@@ -26,23 +48,57 @@ class Deductible
         return $this->amount;
     }
     
-    public function getType(): string
+    public function setAmount(MoneyAmount $amount): static
     {
-        return $this->type;
+        $this->amount = $amount;
+        return $this;
     }
     
-    public function getPercentage(): ?float
+    public function getPercentage(): float
     {
         return $this->percentage;
     }
     
+    public function setPercentage(float $percentage): static
+    {
+        $this->percentage = $percentage;
+        return $this;
+    }
+    
+    public function getApplicableTo(): array
+    {
+        return $this->applicableTo;
+    }
+    
+    public function setApplicableTo(array $applicableTo): static
+    {
+        $this->applicableTo = $applicableTo;
+        return $this;
+    }
+    
     public function calculateDeductible(MoneyAmount $claimAmount): MoneyAmount
     {
-        if ($this->type === 'percentage' && $this->percentage !== null) {
-            $deductibleAmount = $claimAmount->getAmount() * ($this->percentage / 100);
-            return new MoneyAmount($deductibleAmount, $claimAmount->getCurrency());
+        return match($this->type) {
+            DeductibleType::FIXED => $this->amount,
+            DeductibleType::PERCENTAGE => new MoneyAmount(
+                $claimAmount->getAmount() * ($this->percentage / 100),
+                $claimAmount->getCurrency()
+            ),
+            DeductibleType::TIERED => $this->calculateTieredDeductible($claimAmount),
+        };
+    }
+    
+    private function calculateTieredDeductible(MoneyAmount $claimAmount): MoneyAmount
+    {
+        // Simple tiered calculation - could be more complex
+        if ($claimAmount->getAmount() < 1000) {
+            return $this->amount;
         }
         
-        return $this->amount;
+        $percentageAmount = $claimAmount->getAmount() * ($this->percentage / 100);
+        return new MoneyAmount(
+            max($this->amount->getAmount(), $percentageAmount),
+            $claimAmount->getCurrency()
+        );
     }
 }
