@@ -46,8 +46,9 @@ class IncomeRule implements EligibilityRuleInterface
             return (float) $context->creditRating['income'];
         }
         
-        // Default fallback for demonstration (in production this would return null)
-        // indicating that income verification is required
-        return 35000.0;
+        // Income data not available - in production this should return null
+        // For demo purposes, we return a default value to allow testing
+        // TODO: Remove this fallback in production and return null instead
+        return null;
     }
 }
