@@ -4,73 +4,112 @@ declare(strict_types=1);
 
 namespace App\Model\Common;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Represents a physical address with geographic coordinates.
  */
+#[ORM\Embeddable]
 class Address
 {
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $street = null;
+    
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $city = null;
+    
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $zipCode = null;
+    
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $country = null;
+    
+    #[ORM\Embedded(class: GeoCoordinates::class, columnPrefix: 'geo_')]
+    private ?GeoCoordinates $geoCoords = null;
+    
     public function __construct(
-        private string $street,
-        private string $city,
-        private string $postalCode,
-        private string $country,
-        private ?string $state = null,
-        private ?float $latitude = null,
-        private ?float $longitude = null,
+        ?string $street = null,
+        ?string $city = null,
+        ?string $zipCode = null,
+        ?string $country = null,
+        ?GeoCoordinates $geoCoords = null
     ) {
+        $this->street = $street;
+        $this->city = $city;
+        $this->zipCode = $zipCode;
+        $this->country = $country;
+        $this->geoCoords = $geoCoords;
     }
     
-    public function getStreet(): string
+    public function getStreet(): ?string
     {
         return $this->street;
     }
     
-    public function getCity(): string
+    public function setStreet(?string $street): static
+    {
+        $this->street = $street;
+        return $this;
+    }
+    
+    public function getCity(): ?string
     {
         return $this->city;
     }
     
-    public function getPostalCode(): string
+    public function setCity(?string $city): static
     {
-        return $this->postalCode;
+        $this->city = $city;
+        return $this;
     }
     
-    public function getCountry(): string
+    public function getZipCode(): ?string
+    {
+        return $this->zipCode;
+    }
+    
+    public function setZipCode(?string $zipCode): static
+    {
+        $this->zipCode = $zipCode;
+        return $this;
+    }
+    
+    public function getCountry(): ?string
     {
         return $this->country;
     }
     
-    public function getState(): ?string
+    public function setCountry(?string $country): static
     {
-        return $this->state;
+        $this->country = $country;
+        return $this;
     }
     
-    public function getLatitude(): ?float
+    public function getGeoCoords(): ?GeoCoordinates
     {
-        return $this->latitude;
+        return $this->geoCoords;
     }
     
-    public function getLongitude(): ?float
+    public function setGeoCoords(?GeoCoordinates $geoCoords): static
     {
-        return $this->longitude;
+        $this->geoCoords = $geoCoords;
+        return $this;
     }
     
     public function getFullAddress(): string
     {
-        $parts = [$this->street, $this->city];
-        
-        if ($this->state) {
-            $parts[] = $this->state;
-        }
-        
-        $parts[] = $this->postalCode;
-        $parts[] = $this->country;
+        $parts = array_filter([
+            $this->street,
+            $this->city,
+            $this->zipCode,
+            $this->country,
+        ]);
         
         return implode(', ', $parts);
     }
     
     public function hasCoordinates(): bool
     {
-        return $this->latitude !== null && $this->longitude !== null;
+        return $this->geoCoords !== null && $this->geoCoords->isValid();
     }
 }

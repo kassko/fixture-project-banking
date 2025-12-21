@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Abstract;
 
-use App\Model\Financial\InterestRate;
 use App\Model\Financial\MoneyAmount;
-use App\Traits\AuditableTrait;
+use App\Traits\MetadataContainerTrait;
 use App\Traits\TimestampableTrait;
+use DateTimeImmutable;
 
 /**
  * Base abstract class for all financial products.
@@ -15,17 +15,17 @@ use App\Traits\TimestampableTrait;
 abstract class AbstractFinancialProduct
 {
     use TimestampableTrait;
-    use AuditableTrait;
+    use MetadataContainerTrait;
     
     protected string $productCode;
     
-    protected string $productName;
+    protected string $name;
     
-    protected ?MoneyAmount $amount = null;
-    
-    protected ?InterestRate $interestRate = null;
+    protected string $description = '';
     
     protected bool $isActive = true;
+    
+    protected ?DateTimeImmutable $launchDate = null;
     
     public function getProductCode(): string
     {
@@ -38,36 +38,25 @@ abstract class AbstractFinancialProduct
         return $this;
     }
     
-    public function getProductName(): string
+    public function getName(): string
     {
-        return $this->productName;
+        return $this->name;
     }
     
-    public function setProductName(string $productName): static
+    public function setName(string $name): static
     {
-        $this->productName = $productName;
+        $this->name = $name;
         return $this;
     }
     
-    public function getAmount(): ?MoneyAmount
+    public function getDescription(): string
     {
-        return $this->amount;
+        return $this->description;
     }
     
-    public function setAmount(MoneyAmount $amount): static
+    public function setDescription(string $description): static
     {
-        $this->amount = $amount;
-        return $this;
-    }
-    
-    public function getInterestRate(): ?InterestRate
-    {
-        return $this->interestRate;
-    }
-    
-    public function setInterestRate(?InterestRate $interestRate): static
-    {
-        $this->interestRate = $interestRate;
+        $this->description = $description;
         return $this;
     }
     
@@ -79,6 +68,17 @@ abstract class AbstractFinancialProduct
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+        return $this;
+    }
+    
+    public function getLaunchDate(): ?DateTimeImmutable
+    {
+        return $this->launchDate;
+    }
+    
+    public function setLaunchDate(?DateTimeImmutable $launchDate): static
+    {
+        $this->launchDate = $launchDate;
         return $this;
     }
     
