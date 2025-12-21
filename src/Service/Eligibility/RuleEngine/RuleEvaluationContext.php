@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service\Eligibility\RuleEngine;
 
+use App\Brand\BrandConfiguration;
+use App\Context\CampaignContext;
+use App\Context\TemporalContext;
 use App\Entity\Customer;
+use App\Tenant\TenantConfiguration;
 
 class RuleEvaluationContext
 {
@@ -13,11 +17,11 @@ class RuleEvaluationContext
         public readonly array $kycData,
         public readonly array $amlData,
         public readonly array $creditRating,
-        public readonly $existingProducts,
-        public readonly $tenantConfig,
-        public readonly $brandConfig,
-        public readonly $temporalContext,
-        public readonly $campaignContext
+        public readonly array $existingProducts,
+        public readonly TenantConfiguration $tenantConfig,
+        public readonly BrandConfiguration $brandConfig,
+        public readonly TemporalContext $temporalContext,
+        public readonly CampaignContext $campaignContext
     ) {
     }
 }

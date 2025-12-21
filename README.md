@@ -261,6 +261,12 @@ L'API Platform est également disponible pour les endpoints des entités:
 - `POST /api/v1/simulation/loan` - Simulation de prêt multi-scénarios
 - `POST /api/v1/simulation/insurance-quote` - Devis assurance personnalisé
 
+### Eligibility (Éligibilité produits)
+- `POST /api/v1/eligibility/products` - Évaluer l'éligibilité aux produits
+
+### Onboarding (Parcours d'onboarding)
+- `POST /api/v1/onboarding/journey` - Obtenir un parcours d'onboarding personnalisé
+
 ## Exemples cURL
 
 ### Customers (Clients)
@@ -601,3 +607,186 @@ Le projet inclut :
 ## Licence
 
 MIT
+
+### Eligibility (Éligibilité produits)
+
+#### Évaluer l'éligibilité aux produits
+```bash
+curl -X POST http://localhost:8000/api/v1/eligibility/products \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-Id: banque_alpha" \
+  -H "X-Brand-Id: premium_gold" \
+  -d '{
+    "customerId": 1,
+    "productCategories": ["SAVINGS", "LOANS", "INSURANCE"],
+    "includeReasons": true
+  }'
+```
+
+**Réponse exemple:**
+```json
+{
+  "eligible_products": [
+    {
+      "productCode": "SAVINGS_ACCOUNT",
+      "productName": "Compte Épargne",
+      "category": "SAVINGS",
+      "conditions": [],
+      "specialOffer": null,
+      "priority": 80
+    },
+    {
+      "productCode": "CHECKING_ACCOUNT",
+      "productName": "Compte Courant",
+      "category": "SAVINGS",
+      "conditions": [],
+      "specialOffer": {
+        "campaign_id": "end_of_year",
+        "discount_value": 0.15,
+        "valid_until": "2024-12-31"
+      },
+      "priority": 110
+    }
+  ],
+  "ineligible_products": [
+    {
+      "productCode": "PERSONAL_LOAN",
+      "productName": "Prêt Personnel",
+      "reasons": [
+        {
+          "rule": "CREDIT_SCORE",
+          "message": "Insufficient credit score (required: 650, current: 700)"
+        }
+      ],
+      "canBeRemediated": true,
+      "remediationSteps": ["Improve credit score"]
+    }
+  ],
+  "recommendations": [
+    {
+      "product_code": "CHECKING_ACCOUNT",
+      "reason": "Recommended based on your profile"
+    }
+  ],
+  "evaluation_summary": {
+    "total_evaluated": 5,
+    "eligible_count": 2,
+    "rules_applied": ["KYC_STATUS", "CREDIT_SCORE", "AGE_REQUIREMENT"]
+  },
+  "context": {
+    "tenant": "banque_alpha",
+    "brand": "premium_gold",
+    "period": "end_of_year_promotion"
+  }
+}
+```
+
+### Onboarding (Parcours d'onboarding)
+
+#### Obtenir un parcours d'onboarding personnalisé
+```bash
+curl -X POST http://localhost:8000/api/v1/onboarding/journey \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-Id: banque_alpha" \
+  -H "X-Brand-Id: premium_gold" \
+  -d '{
+    "customerType": "INDIVIDUAL",
+    "targetProduct": "CHECKING_ACCOUNT",
+    "channel": "WEB",
+    "campaignCode": "SUMMER2024"
+  }'
+```
+
+**Réponse exemple:**
+```json
+{
+  "journey_id": "JRN-6762a3b4e5c12",
+  "steps": [
+    {
+      "order": 1,
+      "code": "ACCOUNT_CREATION",
+      "name": "Création du compte",
+      "status": "PENDING",
+      "required": true,
+      "estimatedMinutes": 5,
+      "config": []
+    },
+    {
+      "order": 2,
+      "code": "IDENTITY_VERIFICATION",
+      "name": "Vérification d'identité",
+      "status": "PENDING",
+      "required": true,
+      "estimatedMinutes": 10,
+      "config": {
+        "provider": "veriff"
+      }
+    },
+    {
+      "order": 3,
+      "code": "SIGNATURE",
+      "name": "Signature électronique",
+      "status": "PENDING",
+      "required": true,
+      "estimatedMinutes": 3,
+      "config": []
+    },
+    {
+      "order": 4,
+      "code": "ADVISOR_MEETING",
+      "name": "Rendez-vous avec votre conseiller",
+      "status": "PENDING",
+      "required": false,
+      "estimatedMinutes": 30,
+      "config": []
+    }
+  ],
+  "required_documents": [
+    {
+      "type": "PASSPORT",
+      "alternatives": ["NATIONAL_ID", "DRIVER_LICENSE"],
+      "description": "Valid ID document"
+    },
+    {
+      "type": "PROOF_OF_ADDRESS",
+      "description": "Proof of address (less than 3 months old)"
+    }
+  ],
+  "welcome_offers": [
+    {
+      "code": "PREMIUM_WELCOME",
+      "name": "Offre de bienvenue Premium",
+      "description": "Bonus de bienvenue pour clients premium",
+      "value": 150.0,
+      "validDays": 90
+    }
+  ],
+  "estimated_completion_time": 48,
+  "dedicated_advisor": {
+    "id": "ADV-523",
+    "name": "Marie Dupont",
+    "email": "marie.dupont@banque alpha.fr",
+    "phone": "+33 1 23 45 67 89"
+  },
+  "context": {
+    "tenant": "banque_alpha",
+    "brand": "premium_gold",
+    "campaign": null,
+    "channel": "WEB"
+  }
+}
+```
+
+#### Parcours pour client entreprise
+```bash
+curl -X POST http://localhost:8000/api/v1/onboarding/journey \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-Id: banque_alpha" \
+  -H "X-Brand-Id: standard" \
+  -d '{
+    "customerType": "CORPORATE",
+    "targetProduct": "CHECKING_ACCOUNT",
+    "channel": "AGENCY"
+  }'
+```
+
