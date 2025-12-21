@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Abstract;
 
+use App\Model\Common\ContactInfo;
 use App\Traits\IdentifiableTrait;
 use App\Traits\TimestampableTrait;
+use DateTimeImmutable;
 
 /**
  * Base abstract class for all person entities.
@@ -19,7 +21,9 @@ abstract class AbstractPerson
     
     protected string $lastName;
     
-    protected ?\DateTimeImmutable $birthDate = null;
+    protected ?DateTimeImmutable $birthDate = null;
+    
+    protected ?ContactInfo $contactInfo = null;
     
     public function getFirstName(): string
     {
@@ -43,14 +47,25 @@ abstract class AbstractPerson
         return $this;
     }
     
-    public function getBirthDate(): ?\DateTimeImmutable
+    public function getBirthDate(): ?DateTimeImmutable
     {
         return $this->birthDate;
     }
     
-    public function setBirthDate(?\DateTimeImmutable $birthDate): static
+    public function setBirthDate(?DateTimeImmutable $birthDate): static
     {
         $this->birthDate = $birthDate;
+        return $this;
+    }
+    
+    public function getContactInfo(): ?ContactInfo
+    {
+        return $this->contactInfo;
+    }
+    
+    public function setContactInfo(?ContactInfo $contactInfo): static
+    {
+        $this->contactInfo = $contactInfo;
         return $this;
     }
     

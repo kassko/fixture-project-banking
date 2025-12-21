@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Abstract;
 
-use App\Enum\CustomerType;
 use App\Traits\AuditableTrait;
+use DateTimeImmutable;
 
 /**
  * Abstract class for customer entities (level 2 inheritance).
@@ -16,9 +16,11 @@ abstract class AbstractCustomer extends AbstractPerson
     
     protected string $customerNumber;
     
-    protected CustomerType $type;
+    protected ?DateTimeImmutable $registrationDate = null;
     
-    protected bool $isActive = true;
+    protected string $status = 'ACTIVE';
+    
+    protected bool $kycValidated = false;
     
     public function getCustomerNumber(): string
     {
@@ -31,37 +33,53 @@ abstract class AbstractCustomer extends AbstractPerson
         return $this;
     }
     
-    public function getType(): CustomerType
+    public function getRegistrationDate(): ?DateTimeImmutable
     {
-        return $this->type;
+        return $this->registrationDate;
     }
     
-    public function setType(CustomerType $type): static
+    public function setRegistrationDate(?DateTimeImmutable $registrationDate): static
     {
-        $this->type = $type;
+        $this->registrationDate = $registrationDate;
+        return $this;
+    }
+    
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+    
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
+    public function isKycValidated(): bool
+    {
+        return $this->kycValidated;
+    }
+    
+    public function setKycValidated(bool $kycValidated): static
+    {
+        $this->kycValidated = $kycValidated;
         return $this;
     }
     
     public function isActive(): bool
     {
-        return $this->isActive;
-    }
-    
-    public function setIsActive(bool $isActive): static
-    {
-        $this->isActive = $isActive;
-        return $this;
+        return $this->status === 'ACTIVE';
     }
     
     public function deactivate(): static
     {
-        $this->isActive = false;
+        $this->status = 'INACTIVE';
         return $this;
     }
     
     public function activate(): static
     {
-        $this->isActive = true;
+        $this->status = 'ACTIVE';
         return $this;
     }
 }

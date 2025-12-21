@@ -4,33 +4,52 @@ declare(strict_types=1);
 
 namespace App\Model\Insurance;
 
+use App\Model\Common\Address;
 use App\Model\Common\DocumentReference;
-use App\Model\Financial\MoneyAmount;
 use DateTimeImmutable;
 
 /**
- * Represents detailed information about an insurance claim.
+ * Represents detailed information about an insurance claim with deep nesting.
+ * Deep nesting: ClaimDetails → DamageAssessment → MoneyAmount + DocumentReference[]
  */
 class ClaimDetails
 {
-    /**
-     * @param array<DocumentReference> $supportingDocuments
-     */
+    private string $description;
+    
+    private DateTimeImmutable $incidentDate;
+    
+    private Address $incidentLocation;
+    
+    private array $witnesses = [];
+    
+    private DamageAssessment $damageAssessment;
+    
+    private ?DocumentReference $policeReport = null;
+    
+    /** @var DocumentReference[] */
+    private array $photos = [];
+    
     public function __construct(
-        private string $claimNumber,
-        private DateTimeImmutable $incidentDate,
-        private string $incidentDescription,
-        private MoneyAmount $claimedAmount,
-        private string $status,
-        private array $supportingDocuments = [],
-        private ?MoneyAmount $approvedAmount = null,
-        private ?DateTimeImmutable $approvalDate = null,
+        string $description,
+        DateTimeImmutable $incidentDate,
+        Address $incidentLocation,
+        DamageAssessment $damageAssessment
     ) {
+        $this->description = $description;
+        $this->incidentDate = $incidentDate;
+        $this->incidentLocation = $incidentLocation;
+        $this->damageAssessment = $damageAssessment;
     }
     
-    public function getClaimNumber(): string
+    public function getDescription(): string
     {
-        return $this->claimNumber;
+        return $this->description;
+    }
+    
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+        return $this;
     }
     
     public function getIncidentDate(): DateTimeImmutable
@@ -38,46 +57,76 @@ class ClaimDetails
         return $this->incidentDate;
     }
     
-    public function getIncidentDescription(): string
+    public function setIncidentDate(DateTimeImmutable $incidentDate): static
     {
-        return $this->incidentDescription;
+        $this->incidentDate = $incidentDate;
+        return $this;
     }
     
-    public function getClaimedAmount(): MoneyAmount
+    public function getIncidentLocation(): Address
     {
-        return $this->claimedAmount;
+        return $this->incidentLocation;
     }
     
-    public function getStatus(): string
+    public function setIncidentLocation(Address $incidentLocation): static
     {
-        return $this->status;
+        $this->incidentLocation = $incidentLocation;
+        return $this;
     }
     
-    /**
-     * @return array<DocumentReference>
-     */
-    public function getSupportingDocuments(): array
+    public function getWitnesses(): array
     {
-        return $this->supportingDocuments;
+        return $this->witnesses;
     }
     
-    public function getApprovedAmount(): ?MoneyAmount
+    public function setWitnesses(array $witnesses): static
     {
-        return $this->approvedAmount;
+        $this->witnesses = $witnesses;
+        return $this;
     }
     
-    public function getApprovalDate(): ?DateTimeImmutable
+    public function addWitness(array $witness): static
     {
-        return $this->approvalDate;
+        $this->witnesses[] = $witness;
+        return $this;
     }
     
-    public function isApproved(): bool
+    public function getDamageAssessment(): DamageAssessment
     {
-        return $this->approvedAmount !== null && $this->approvalDate !== null;
+        return $this->damageAssessment;
     }
     
-    public function addDocument(DocumentReference $document): void
+    public function setDamageAssessment(DamageAssessment $damageAssessment): static
     {
-        $this->supportingDocuments[] = $document;
+        $this->damageAssessment = $damageAssessment;
+        return $this;
+    }
+    
+    public function getPoliceReport(): ?DocumentReference
+    {
+        return $this->policeReport;
+    }
+    
+    public function setPoliceReport(?DocumentReference $policeReport): static
+    {
+        $this->policeReport = $policeReport;
+        return $this;
+    }
+    
+    public function getPhotos(): array
+    {
+        return $this->photos;
+    }
+    
+    public function setPhotos(array $photos): static
+    {
+        $this->photos = $photos;
+        return $this;
+    }
+    
+    public function addPhoto(DocumentReference $photo): static
+    {
+        $this->photos[] = $photo;
+        return $this;
     }
 }
