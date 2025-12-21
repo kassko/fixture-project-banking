@@ -241,6 +241,7 @@ class ProductEligibilityService
         $campaign = $context->campaignContext;
         $eligibleProducts = $campaign->getEligibleProducts();
         
+        // If no specific products listed, campaign applies to all; otherwise check if product is in list
         if (empty($eligibleProducts) || in_array($product['code'], $eligibleProducts)) {
             return [
                 'campaign_id' => $campaign->getId(),

@@ -765,7 +765,7 @@ curl -X POST http://localhost:8000/api/v1/onboarding/journey \
   "dedicated_advisor": {
     "id": "ADV-523",
     "name": "Marie Dupont",
-    "email": "marie.dupont@banque alpha.fr",
+    "email": "marie.dupont@banquealpha.fr",
     "phone": "+33 1 23 45 67 89"
   },
   "context": {

@@ -215,9 +215,9 @@ class OnboardingJourneyService
     {
         // Simulation d'assignation d'un conseiller
         return [
-            'id' => 'ADV-' . rand(100, 999),
+            'id' => 'ADV-' . random_int(100, 999),
             'name' => 'Marie Dupont',
-            'email' => 'marie.dupont@' . strtolower($tenantConfig->get('name', 'banque')) . '.fr',
+            'email' => 'marie.dupont@' . strtolower(str_replace(' ', '', $tenantConfig->get('name', 'banque'))) . '.fr',
             'phone' => '+33 1 23 45 67 89',
         ];
     }
