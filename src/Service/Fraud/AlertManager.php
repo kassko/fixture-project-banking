@@ -8,6 +8,8 @@ use App\DTO\Response\FraudAlert;
 
 class AlertManager
 {
+    // NOTE: In-memory storage for demonstration purposes only.
+    // In production, this should be replaced with a proper repository.
     private array $alerts = [];
     private int $nextAlertId = 1;
 

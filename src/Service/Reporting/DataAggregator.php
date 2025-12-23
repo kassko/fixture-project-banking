@@ -54,7 +54,8 @@ class DataAggregator
 
     private function getAccounts(int $customerId): array
     {
-        // Simulate account retrieval
+        // NOTE: Simulated account data for demonstration purposes.
+        // Account numbers are clearly fake examples (not real IBANs).
         return [
             [
                 'account_number' => 'FR7612345678901234567890123',

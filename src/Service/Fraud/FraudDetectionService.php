@@ -78,8 +78,8 @@ class FraudDetectionService
 
     public function getScore(int $transactionId): float
     {
-        // Simulate getting a fraud score for a transaction
-        // In a real implementation, this would retrieve from storage
+        // NOTE: Simulated fraud score for demonstration purposes.
+        // In production, this should retrieve the actual calculated score from storage.
         return (float) rand(0, 100);
     }
 

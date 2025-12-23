@@ -11,6 +11,8 @@ use App\Repository\CustomerRepository;
 
 class ReportingService
 {
+    // NOTE: In-memory storage for demonstration purposes only.
+    // In production, this should be replaced with a proper repository.
     private array $reports = [];
 
     public function __construct(

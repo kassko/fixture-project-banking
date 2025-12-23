@@ -8,6 +8,8 @@ use App\DTO\Response\ReportConfiguration;
 
 class ReportScheduler
 {
+    // NOTE: In-memory storage for demonstration purposes only.
+    // In production, this should be replaced with a proper repository.
     private array $schedules = [];
 
     public function scheduleReport(
