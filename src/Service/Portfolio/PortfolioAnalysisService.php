@@ -202,12 +202,17 @@ class PortfolioAnalysisService
         return $data;
     }
 
+    private const MIN_AGE = 25;
+    private const MAX_AGE = 65;
+    private const MIN_INVESTMENT_HORIZON = 5;
+    private const MAX_INVESTMENT_HORIZON = 30;
+
     private function buildCustomerProfile($customer): array
     {
         return [
-            'age' => rand(25, 65),
+            'age' => rand(self::MIN_AGE, self::MAX_AGE),
             'risk_profile' => ['CONSERVATIVE', 'MODERATE', 'AGGRESSIVE'][rand(0, 2)],
-            'investment_horizon' => rand(5, 30),
+            'investment_horizon' => rand(self::MIN_INVESTMENT_HORIZON, self::MAX_INVESTMENT_HORIZON),
             'financial_goals' => ['retirement', 'wealth_accumulation', 'income_generation'],
         ];
     }

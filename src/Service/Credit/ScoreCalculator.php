@@ -61,7 +61,7 @@ class ScoreCalculator
         $totalCredit = $data['total_credit_limit'] ?? 10000;
         $usedCredit = $data['used_credit'] ?? 3000;
 
-        if ($totalCredit == 0) {
+        if ($totalCredit === 0) {
             return 50.0;
         }
 

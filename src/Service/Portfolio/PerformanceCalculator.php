@@ -79,7 +79,7 @@ class PerformanceCalculator
 
     private function calculateSharpeRatio(float $annualizedReturn, float $volatility): float
     {
-        if ($volatility == 0) {
+        if ($volatility === 0.0) {
             return 0.0;
         }
 

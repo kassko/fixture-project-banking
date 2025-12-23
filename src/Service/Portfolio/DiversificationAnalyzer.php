@@ -6,6 +6,8 @@ namespace App\Service\Portfolio;
 
 class DiversificationAnalyzer
 {
+    private const CONCENTRATION_THRESHOLD = 10.0; // Percentage threshold for concentration risk
+
     public function analyzeDiversification(array $portfolio): array
     {
         $assetAllocation = $this->calculateAssetAllocation($portfolio);
@@ -121,7 +123,7 @@ class DiversificationAnalyzer
 
         foreach ($portfolio as $asset) {
             $percentage = ($asset['value'] / $totalValue) * 100;
-            if ($percentage > 10) { // Flag assets > 10% of portfolio
+            if ($percentage > self::CONCENTRATION_THRESHOLD) {
                 $concentrations[] = [
                     'asset' => $asset['name'] ?? $asset['symbol'],
                     'percentage' => round($percentage, 2),

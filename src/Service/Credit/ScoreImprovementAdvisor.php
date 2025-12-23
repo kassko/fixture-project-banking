@@ -6,6 +6,8 @@ namespace App\Service\Credit;
 
 class ScoreImprovementAdvisor
 {
+    private const TARGET_UTILIZATION_RATE = 0.30; // 30% optimal credit utilization
+
     public function generateRecommendations(int $currentScore, array $criteriaAnalysis, array $customerData): array
     {
         $recommendations = [];
@@ -75,8 +77,8 @@ class ScoreImprovementAdvisor
         $recommendations = [];
         $utilizationRate = ($customerData['used_credit'] ?? 0) / max(1, $customerData['total_credit_limit'] ?? 1) * 100;
 
-        if ($utilizationRate > 30) {
-            $targetReduction = ($customerData['used_credit'] ?? 0) - (($customerData['total_credit_limit'] ?? 0) * 0.30);
+        if ($utilizationRate > (self::TARGET_UTILIZATION_RATE * 100)) {
+            $targetReduction = ($customerData['used_credit'] ?? 0) - (($customerData['total_credit_limit'] ?? 0) * self::TARGET_UTILIZATION_RATE);
             
             $recommendations[] = [
                 'criterion' => 'credit_utilization',

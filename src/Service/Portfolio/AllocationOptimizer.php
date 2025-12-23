@@ -6,6 +6,11 @@ namespace App\Service\Portfolio;
 
 class AllocationOptimizer
 {
+    private const MIN_STOCK_PERCENTAGE = 20;
+    private const MAX_STOCK_PERCENTAGE = 100;
+    private const MAX_BOND_PERCENTAGE = 80;
+    private const MIN_CASH_PERCENTAGE = 5;
+
     public function optimizeAllocation(array $portfolio, array $customerProfile): array
     {
         $currentAllocation = $this->getCurrentAllocation($portfolio);
@@ -54,8 +59,8 @@ class AllocationOptimizer
         $riskProfile = $customerProfile['risk_profile'] ?? 'MODERATE';
         
         // Rule of thumb: bonds % = age, stocks = 100 - age
-        $baseStockPercentage = max(20, 100 - $age);
-        $baseBondPercentage = min(80, $age);
+        $baseStockPercentage = max(self::MIN_STOCK_PERCENTAGE, self::MAX_STOCK_PERCENTAGE - $age);
+        $baseBondPercentage = min(self::MAX_BOND_PERCENTAGE, $age);
 
         // Adjust based on risk profile
         $adjustments = match ($riskProfile) {
@@ -64,12 +69,12 @@ class AllocationOptimizer
             default => ['stocks' => 0, 'bonds' => 0],
         };
 
-        $stockPercentage = max(0, min(100, $baseStockPercentage + $adjustments['stocks']));
-        $bondPercentage = max(0, min(100, $baseBondPercentage + $adjustments['bonds']));
+        $stockPercentage = max(0, min(self::MAX_STOCK_PERCENTAGE, $baseStockPercentage + $adjustments['stocks']));
+        $bondPercentage = max(0, min(self::MAX_STOCK_PERCENTAGE, $baseBondPercentage + $adjustments['bonds']));
         
         // Remaining allocation
-        $remaining = 100 - $stockPercentage - $bondPercentage;
-        $cashPercentage = max(5, $remaining * 0.5);
+        $remaining = self::MAX_STOCK_PERCENTAGE - $stockPercentage - $bondPercentage;
+        $cashPercentage = max(self::MIN_CASH_PERCENTAGE, $remaining * 0.5);
         $realEstatePercentage = $remaining * 0.3;
         $commoditiesPercentage = $remaining * 0.2;
 
