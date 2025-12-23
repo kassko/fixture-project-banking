@@ -11,6 +11,8 @@ use App\Repository\CustomerRepository;
 
 class NotificationService
 {
+    private const QUIET_HOURS_END_TIME = '08:00:00';
+    
     private array $notifications = [];
 
     public function __construct(
@@ -163,7 +165,7 @@ class NotificationService
     private function scheduleForLater(NotificationRequest $request): NotificationResponse
     {
         // Schedule for 8 AM next day (end of quiet hours)
-        $tomorrow8am = date('Y-m-d 08:00:00', strtotime('+1 day'));
+        $tomorrow8am = date('Y-m-d ' . self::QUIET_HOURS_END_TIME, strtotime('+1 day'));
         
         $scheduled = $this->notificationScheduler->schedule(
             $request->getCustomerId(),

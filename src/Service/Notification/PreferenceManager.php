@@ -8,6 +8,9 @@ use App\DTO\Response\NotificationPreferences;
 
 class PreferenceManager
 {
+    private const DEFAULT_QUIET_HOURS_START = '22';
+    private const DEFAULT_QUIET_HOURS_END = '08';
+    
     private array $preferences = [];
 
     public function getPreferences(int $customerId): NotificationPreferences
@@ -95,7 +98,7 @@ class PreferenceManager
             true, // push enabled
             true, // in-app enabled
             ['EMAIL', 'IN_APP'], // preferred channels
-            ['start' => '22', 'end' => '08'], // quiet hours: 10 PM to 8 AM
+            ['start' => self::DEFAULT_QUIET_HOURS_START, 'end' => self::DEFAULT_QUIET_HOURS_END], // quiet hours: 10 PM to 8 AM
             [
                 'transaction' => true,
                 'security' => true,

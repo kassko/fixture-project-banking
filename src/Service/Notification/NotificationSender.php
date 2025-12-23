@@ -10,6 +10,11 @@ use App\Enum\NotificationStatus;
 
 class NotificationSender
 {
+    private const EMAIL_SUCCESS_RATE = 0.90;
+    private const SMS_SUCCESS_RATE = 0.95;
+    private const PUSH_SUCCESS_RATE = 0.85;
+    private const IN_APP_SUCCESS_RATE = 0.99;
+
     public function send(
         string $notificationId,
         int $customerId,
@@ -78,25 +83,25 @@ class NotificationSender
 
     private function sendEmail(int $customerId, string $subject, string $message, array $metadata): bool
     {
-        // Simulate email sending (90% success rate)
-        return rand(1, 10) <= 9;
+        // Simulate email sending
+        return (rand(1, 100) / 100) <= self::EMAIL_SUCCESS_RATE;
     }
 
     private function sendSms(int $customerId, string $message, array $metadata): bool
     {
-        // Simulate SMS sending (95% success rate)
-        return rand(1, 20) <= 19;
+        // Simulate SMS sending
+        return (rand(1, 100) / 100) <= self::SMS_SUCCESS_RATE;
     }
 
     private function sendPush(int $customerId, string $subject, string $message, array $metadata): bool
     {
-        // Simulate push notification (85% success rate)
-        return rand(1, 20) <= 17;
+        // Simulate push notification
+        return (rand(1, 100) / 100) <= self::PUSH_SUCCESS_RATE;
     }
 
     private function sendInApp(int $customerId, string $subject, string $message, array $metadata): bool
     {
-        // Simulate in-app notification (99% success rate - always works if app is available)
-        return rand(1, 100) <= 99;
+        // Simulate in-app notification
+        return (rand(1, 100) / 100) <= self::IN_APP_SUCCESS_RATE;
     }
 }

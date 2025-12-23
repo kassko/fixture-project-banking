@@ -8,6 +8,8 @@ use App\DTO\Response\NotificationTemplate;
 
 class TemplateManager
 {
+    private const DATE_FORMAT = 'Y-m-d H:i:s';
+    
     private array $templates = [];
 
     public function __construct()
@@ -45,7 +47,7 @@ class TemplateManager
             $body,
             $variables,
             $category,
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
 
         $this->templates[$templateId] = $template;
@@ -92,7 +94,7 @@ class TemplateManager
             'Bonjour {{customer_name}}, bienvenue dans notre banque ! Votre compte {{account_number}} est maintenant actif.',
             ['bank_name', 'customer_name', 'account_number'],
             'onboarding',
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
 
         // Transaction alert
@@ -105,7 +107,7 @@ class TemplateManager
             'Transaction de {{amount}} EUR effectuée sur votre compte {{account_number}}. Solde: {{balance}} EUR.',
             ['amount', 'account_number', 'balance'],
             'transaction',
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
 
         // Payment reminder
@@ -118,7 +120,7 @@ class TemplateManager
             'Bonjour {{customer_name}}, votre paiement de {{amount}} EUR est prévu pour le {{due_date}}.',
             ['customer_name', 'amount', 'due_date'],
             'payment',
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
 
         // Security alert
@@ -131,7 +133,7 @@ class TemplateManager
             'Activité suspecte détectée sur votre compte. Vérifiez immédiatement.',
             [],
             'security',
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
 
         // Monthly statement
@@ -144,7 +146,7 @@ class TemplateManager
             'Bonjour {{customer_name}}, votre relevé pour {{month}} est maintenant disponible.',
             ['customer_name', 'month'],
             'statement',
-            date('Y-m-d H:i:s')
+            date(self::DATE_FORMAT)
         );
     }
 }
