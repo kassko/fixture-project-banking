@@ -1,0 +1,44 @@
+{
+    "name": "Symfony Banking Project",
+    "image": "mcr.microsoft.com/devcontainers/php:1-8.3-bookworm",
+    
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {
+            "version": "lts"
+        },
+        "ghcr.io/devcontainers-contrib/features/coverage-gutters:1": {}
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "junstyle.php-cs-fixer",
+                "MehediDrawormo.php-namespace-resolver",
+                "TheNouillet.symfony-vscode",
+                "DEVSENSE.phptools-vscode",
+                "ryannaddy.laravel-artisan",
+                "EditorConfig.EditorConfig",
+                "eamodio.gitlens"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php",
+                "intelephense.environment.phpVersion": "8.3.0",
+                "editor.formatOnSave": true,
+                "[php]": {
+                    "editor.defaultFormatter": "junstyle.php-cs-fixer"
+                }
+            }
+        }
+    },
+
+    "forwardPorts": [8000, 3306],
+    
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+    "remoteEnv": {
+        "APP_ENV": "dev",
+        "APP_DEBUG": "1"
+    }
+}
