@@ -1,12 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "🔧 Installing PHP extensions..."
-sudo apt-get update
-sudo apt-get install -y libicu-dev libzip-dev libpq-dev
-sudo docker-php-ext-install intl zip pdo pdo_mysql
-
-echo "📦 Installing Composer dependencies..."
+echo " Installing Composer dependencies..."
 composer install --prefer-dist --no-interaction
 
 echo "🗄️ Setting up database (SQLite for development)..."
