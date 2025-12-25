@@ -1,0 +1,5 @@
+imports:
+    - { resource: services.yaml }
+
+framework:
+    secret: '%env(APP_SECRET)%'
