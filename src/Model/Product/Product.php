@@ -75,7 +75,7 @@ class Product
 
     public function validate(): void
     {
-        parent::validate();
+        $this->validationErrors = [];
         
         if (empty($this->name)) {
             $this->addValidationError('name', 'Product name is required');

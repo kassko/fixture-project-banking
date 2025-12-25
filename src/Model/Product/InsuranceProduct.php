@@ -60,7 +60,7 @@ class InsuranceProduct extends Product
 
     public function validate(): void
     {
-        parent::validate();
+        $this->validationErrors = [];
         
         if ($this->premium !== null && $this->premium <= 0) {
             $this->addValidationError('premium', 'Premium must be positive');
@@ -68,6 +68,14 @@ class InsuranceProduct extends Product
         
         if ($this->coverageAmount !== null && $this->coverageAmount <= 0) {
             $this->addValidationError('coverageAmount', 'Coverage amount must be positive');
+        }
+        
+        if (empty($this->getName())) {
+            $this->addValidationError('name', 'Product name is required');
+        }
+        
+        if ($this->getPrice() !== null && $this->getPrice() < 0) {
+            $this->addValidationError('price', 'Price cannot be negative');
         }
     }
 }

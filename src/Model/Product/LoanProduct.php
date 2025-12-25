@@ -60,7 +60,7 @@ class LoanProduct extends Product
 
     public function validate(): void
     {
-        parent::validate();
+        $this->validationErrors = [];
         
         if ($this->interestRate !== null && $this->interestRate < 0) {
             $this->addValidationError('interestRate', 'Interest rate cannot be negative');
@@ -68,6 +68,14 @@ class LoanProduct extends Product
         
         if ($this->termMonths !== null && $this->termMonths <= 0) {
             $this->addValidationError('termMonths', 'Term must be positive');
+        }
+        
+        if (empty($this->getName())) {
+            $this->addValidationError('name', 'Product name is required');
+        }
+        
+        if ($this->getPrice() !== null && $this->getPrice() < 0) {
+            $this->addValidationError('price', 'Price cannot be negative');
         }
     }
 }

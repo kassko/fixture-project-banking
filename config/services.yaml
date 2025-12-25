@@ -46,21 +46,14 @@ services:
         arguments:
             $configPath: '%kernel.project_dir%/config/feature_flags.yaml'
 
-    # Resolvers with tagged iterator for data sources
+    # Resolvers - using NullLogger if no logger service available
     App\Resolver\SourceResolver:
         arguments:
             $sources: !tagged_iterator 'app.data_source'
-            $logger: '@?logger'
 
-    App\Resolver\FallbackResolver:
-        arguments:
-            $logger: '@?logger'
+    App\Resolver\FallbackResolver: ~
 
-    App\Resolver\DataMaskingResolver:
-        arguments:
-            $logger: '@?logger'
+    App\Resolver\DataMaskingResolver: ~
 
-    App\Resolver\ConflictResolver:
-        arguments:
-            $logger: '@?logger'
+    App\Resolver\ConflictResolver: ~
 
