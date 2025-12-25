@@ -1,0 +1,54 @@
+sources:
+    # Primary Sources
+    internal_api:
+        class: 'App\DataSource\Primary\InternalApiSource'
+        priority: 10
+        enabled: true
+    
+    cache:
+        class: 'App\DataSource\Primary\CacheSource'
+        priority: 20
+        enabled: true
+    
+    config:
+        class: 'App\DataSource\Primary\ConfigSource'
+        priority: 5
+        enabled: true
+    
+    # External Sources
+    partner_api:
+        class: 'App\DataSource\External\PartnerApiSource'
+        priority: 15
+        enabled: true
+    
+    credit_bureau:
+        class: 'App\DataSource\External\CreditBureauSource'
+        priority: 25
+        enabled: true
+    
+    market_data:
+        class: 'App\DataSource\External\MarketDataSource'
+        priority: 12
+        enabled: true
+    
+    # Legacy Sources
+    legacy_database:
+        class: 'App\DataSource\Legacy\LegacyDatabaseSource'
+        priority: 8
+        enabled: true
+    
+    flat_file:
+        class: 'App\DataSource\Legacy\FlatFileSource'
+        priority: 3
+        enabled: true
+    
+    # Fallback Sources
+    default_values:
+        class: 'App\DataSource\Fallback\DefaultValuesSource'
+        priority: 1
+        enabled: true
+    
+    cached_fallback:
+        class: 'App\DataSource\Fallback\CachedFallbackSource'
+        priority: 6
+        enabled: true
