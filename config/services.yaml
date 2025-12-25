@@ -1,0 +1,52 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Model/'
+            - '../src/Traits/'
+
+    # Data Sources
+    App\DataSource\Primary\InternalApiSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Primary\CacheSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Primary\ConfigSource:
+        tags: ['app.data_source']
+
+    App\DataSource\External\PartnerApiSource:
+        tags: ['app.data_source']
+
+    App\DataSource\External\CreditBureauSource:
+        tags: ['app.data_source']
+
+    App\DataSource\External\MarketDataSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Legacy\LegacyDatabaseSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Legacy\FlatFileSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Fallback\DefaultValuesSource:
+        tags: ['app.data_source']
+
+    App\DataSource\Fallback\CachedFallbackSource:
+        tags: ['app.data_source']
+
+    # Feature Flags
+    App\FeatureFlag\FeatureFlagProvider:
+        arguments:
+            $configPath: '%kernel.project_dir%/config/feature_flags.yaml'
+
+    # Resolvers
+    App\Resolver\SourceResolver:
+        arguments:
+            $sources: !tagged_iterator 'app.data_source'
