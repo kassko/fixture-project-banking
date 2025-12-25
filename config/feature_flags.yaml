@@ -1,0 +1,40 @@
+feature_flags:
+    # Risk and Scoring Features
+    show_detailed_risk:
+        enabled: true
+        description: "Show detailed risk analysis data"
+    
+    show_credit_score:
+        enabled: true
+        description: "Display credit score information"
+    
+    enable_premium_features:
+        enabled: true
+        description: "Enable premium customer features"
+    
+    # Data Source Features
+    use_external_sources:
+        enabled: true
+        description: "Allow external data source usage"
+    
+    enable_fallback_chain:
+        enabled: true
+        description: "Enable fallback source chain"
+    
+    # Privacy and Masking Features
+    mask_pii_data:
+        enabled: false
+        description: "Mask personally identifiable information"
+    
+    enable_data_aggregation:
+        enabled: true
+        description: "Enable data aggregation for regular users"
+    
+    # Multi-source Features
+    enable_conflict_resolution:
+        enabled: true
+        description: "Enable conflict resolution for multiple sources"
+    
+    enable_source_merging:
+        enabled: true
+        description: "Enable merging data from multiple sources"
